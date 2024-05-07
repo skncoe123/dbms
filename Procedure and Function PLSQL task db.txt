@@ -1,0 +1,51 @@
+Write and execute PL/SQL stored procedure and function to perform a suitable task on the database. Demonstrate its use.
+
+CREATE TABLE Products (
+    product_id NUMBER PRIMARY KEY,
+    product_name VARCHAR2(100),
+    price NUMBER,
+    quantity NUMBER
+);
+
+INSERT INTO Products (product_id, product_name, price, quantity) VALUES
+(1, 'Laptop', 1200, 10),
+(2, 'Smartphone', 800, 20),
+(3, 'Headphones', 100, 50);
+
+CREATE OR REPLACE PROCEDURE UpdatePrice (
+    p_product_id IN NUMBER,
+    p_new_price IN NUMBER
+) AS
+BEGIN
+    UPDATE Products
+    SET price = p_new_price
+    WHERE product_id = p_product_id;
+    
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Price updated successfully.');
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Product not found.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An error occurred: ' || SQLERRM);
+END;
+/
+
+
+CREATE OR REPLACE FUNCTION GetTotalValue (
+    p_product_id IN NUMBER
+) RETURN NUMBER AS
+    v_total_value NUMBER;
+BEGIN
+    SELECT price * quantity INTO v_total_value
+    FROM Products
+    WHERE product_id = p_product_id;
+    
+    RETURN v_total_value;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN NULL;
+    WHEN OTHERS THEN
+        RAISE;
+END;
+/

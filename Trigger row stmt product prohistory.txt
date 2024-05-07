@@ -1,0 +1,51 @@
+Write and execute suitable database triggers. Consider row level and statement level triggers. 
+The price of a product changes constantly. It is important to maintain the history of the prices of the 
+products. Create a trigger to update the 'product_price_history' table when the price of the product is 
+updated in the 'product' table.  
+Create the 'product' table and 'product_price_history' table  
+CREATE TABLE product_price_history (product_id number(5), product_name varchar2(32), 
+supplier_name varchar2(32), unit_price number(7,2) ); 
+CREATE TABLE product (product_id number(5), product_name varchar2(32),  
+supplier_name varchar2(32), unit_price number(7,2) ); 
+
+
+CREATE TABLE product_price_history (
+    product_id NUMBER(5),
+    product_name VARCHAR2(32),
+    supplier_name VARCHAR2(32),
+    unit_price NUMBER(7,2),
+    change_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE product (
+    product_id NUMBER(5),
+    product_name VARCHAR2(32),
+    supplier_name VARCHAR2(32),
+    unit_price NUMBER(7,2)
+);
+
+-- Create row-level trigger to update product_price_history
+
+CREATE OR REPLACE TRIGGER product_price_update
+AFTER UPDATE OF unit_price ON product
+FOR EACH ROW
+BEGIN
+    INSERT INTO product_price_history (product_id, product_name, supplier_name, unit_price)
+    VALUES (:OLD.product_id, :OLD.product_name, :OLD.supplier_name, :OLD.unit_price);
+END;
+/
+
+-- Create statement-level trigger to update product_price_history
+
+CREATE OR REPLACE TRIGGER product_price_update_statement
+AFTER UPDATE OF unit_price ON product
+BEGIN
+    INSERT INTO product_price_history (product_id, product_name, supplier_name, unit_price)
+    SELECT product_id, product_name, supplier_name, unit_price
+    FROM product;
+END;
+/
+
+
+COMMIT;

@@ -1,0 +1,34 @@
+Design and implement a database using DDL statements and apply normalization on them.
+
+CREATE TABLE Authors (
+    author_id INT PRIMARY KEY,
+    author_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Publishers (
+    publisher_id INT PRIMARY KEY,
+    publisher_name VARCHAR(100) NOT NULL,
+    city VARCHAR(100),
+    country VARCHAR(100)
+);
+
+CREATE TABLE Books (
+    book_id INT PRIMARY KEY,
+    book_title VARCHAR(100) NOT NULL,
+    author_id INT,
+    publisher_id INT,
+    publication_year INT,
+    price DECIMAL(10, 2),
+    FOREIGN KEY (author_id) REFERENCES Authors(author_id),
+    FOREIGN KEY (publisher_id) REFERENCES Publishers(publisher_id)
+);
+  
+INSERT INTO Authors (author_id, author_name) VALUES
+(1, 'J.K. Rowling'),
+(2, 'Stephen King'),
+(3, 'Agatha Christie');
+
+INSERT INTO Publishers (publisher_id, publisher_name, city, country) VALUES
+(1, 'Bloomsbury Publishing', 'London', 'UK'),
+(2, 'Penguin Random House', 'New York', 'USA'),
+(3, 'HarperCollins', 'London', 'UK');

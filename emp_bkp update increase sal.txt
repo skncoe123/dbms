@@ -1,0 +1,16 @@
+-- Step 1: Create Employee_BKP table and copy data
+CREATE TABLE Employee_BKP AS
+SELECT * FROM Employee;
+
+-- Step 2: Update SALARY for employees with AGE >= 27
+UPDATE Employee
+SET SALARY = SALARY * 0.25
+WHERE AGE >= 27;
+
+-- Step 3: Delete records for employees with AGE >= 27
+DELETE FROM Employee
+WHERE ID IN (
+    SELECT ID
+    FROM Employee
+    WHERE AGE >= 27
+);

@@ -1,0 +1,102 @@
+Write mysql queries for the following: 
+
+CREATE TABLE Departments (
+    department_id INT PRIMARY KEY,
+    department_name VARCHAR(100) NOT NULL,
+    location_id INT,
+    FOREIGN KEY (location_id) REFERENCES Locations(location_id)
+);
+
+
+CREATE TABLE Employees (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(100) NOT NULL,
+    department_id INT,
+    job_title VARCHAR(100),
+    FOREIGN KEY (department_id) REFERENCES Departments(department_id)
+);
+
+
+CREATE TABLE Locations (
+    location_id INT PRIMARY KEY,
+    city VARCHAR(100) NOT NULL
+);
+
+
+CREATE TABLE Projects (
+    project_id INT PRIMARY KEY,
+    project_name VARCHAR(100) NOT NULL,
+    project_status VARCHAR(50)
+);
+
+
+CREATE TABLE Project_Assignments (
+    assignment_id INT PRIMARY KEY,
+    employee_id INT,
+    project_id INT,
+    FOREIGN KEY (employee_id) REFERENCES Employees(employee_id),
+    FOREIGN KEY (project_id) REFERENCES Projects(project_id)
+);
+
+1. List all employees of „INVENTORY‟ department of „PUNE‟ location.
+SELECT e.*
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+JOIN locations l ON d.location_id = l.location_id
+WHERE d.department_name = 'INVENTORY' AND l.city = 'PUNE';
+
+2. Give the names of employees who are working on „Blood Bank‟ project.
+SELECT e.employee_name
+FROM employees e
+JOIN project_assignments pa ON e.employee_id = pa.employee_id
+JOIN projects p ON pa.project_id = p.project_id
+WHERE p.project_name = 'Blood Bank';
+
+3. Give the name of managers from „MARKETING‟ department.
+SELECT e.employee_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+WHERE d.department_name = 'MARKETING' AND e.job_title = 'Manager';
+
+4. Give all the employees working under status „INCOMPLETE‟ projects 
+SELECT e.*
+FROM employees e
+JOIN project_assignments pa ON e.employee_id = pa.employee_id
+JOIN projects p ON pa.project_id = p.project_id
+WHERE p.project_status = 'INCOMPLETE';
+
+5. List all employees of „PUNE‟ location.
+SELECT e.*
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+JOIN locations l ON d.location_id = l.location_id
+WHERE l.city = 'PUNE';
+
+6. List all dept. with their employee count. 
+SELECT d.department_name, COUNT(e.employee_id) AS employee_count
+FROM departments d
+LEFT JOIN employees e ON d.department_id = e.department_id
+GROUP BY d.department_name;
+
+7. List all dept. with employees working under status „COMPLETE‟ project.
+SELECT d.department_name, e.*
+FROM departments d
+JOIN employees e ON d.department_id = e.department_id
+JOIN project_assignments pa ON e.employee_id = pa.employee_id
+JOIN projects p ON pa.project_id = p.project_id
+WHERE p.project_status = 'COMPLETE';
+
+8. Count total no. of dept. 
+SELECT COUNT(*) AS total_departments
+FROM departments;
+
+9. Display total no of employee.
+SELECT COUNT(*) AS total_employees
+FROM employees;
+
+10. List out all the project name and name of employees working on that project
+SELECT p.project_name, e.employee_name
+FROM projects p
+JOIN project_assignments pa ON p.project_id = pa.project_id
+JOIN employees e ON pa.employee_id = e.employee_id;
+

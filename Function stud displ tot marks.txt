@@ -1,0 +1,32 @@
+Consider table Student(rollnumber,name,sub1,sub2,sub3). Create function to display total marks of a mentioned student. 
+
+CREATE TABLE Student (
+    rollnumber INT PRIMARY KEY,
+    name VARCHAR(50),
+    sub1 INT,
+    sub2 INT,
+    sub3 INT
+);
+
+INSERT INTO Student (rollnumber, name, sub1, sub2, sub3) VALUES (1, 'John', 80, 75, 90);
+INSERT INTO Student (rollnumber, name, sub1, sub2, sub3) VALUES (2, 'Alice', 85, 88, 92);
+INSERT INTO Student (rollnumber, name, sub1, sub2, sub3) VALUES (3, 'Bob', 70, 65, 75);
+
+CREATE OR REPLACE FUNCTION GetTotalMarks(student_rollnumber INT) RETURN INT IS
+    total_marks INT;
+BEGIN
+    SELECT sub1 + sub2 + sub3 INTO total_marks
+    FROM Student
+    WHERE rollnumber = student_rollnumber;
+    RETURN total_marks;
+END;
+/
+
+DECLARE
+    student_rollnumber INT := 1; 
+    total_marks INT;
+BEGIN
+    total_marks := GetTotalMarks(student_rollnumber);
+    DBMS_OUTPUT.PUT_LINE('Total marks for student with roll number ' || student_rollnumber || ' is: ' || total_marks);
+END;
+/

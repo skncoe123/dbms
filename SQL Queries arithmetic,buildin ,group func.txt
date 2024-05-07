@@ -1,0 +1,44 @@
+Perform following SQL queries on the database  
+• Arithmetic operations and built in functions  
+• Group functions
+
+CREATE TABLE Departments (
+    department_id INT PRIMARY KEY,
+    department_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Employees (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(100) NOT NULL,
+    department_id INT,
+    salary DECIMAL(10, 2),
+    FOREIGN KEY (department_id) REFERENCES Departments(department_id)
+);
+
+INSERT INTO Departments (department_id, department_name) VALUES
+(1, 'HR'),
+(2, 'Finance'),
+(3, 'IT');
+
+INSERT INTO Employees (employee_id, employee_name, department_id, salary) VALUES
+(1, 'RAM KUMAR', 1, 50000.00),
+(2, 'SHAAM SINGH', 2, 60000.00),
+(3, 'SIYA JAIN', 3, 70000.00);
+
+SELECT SUM(salary) AS total_salary FROM Employees;
+SELECT AVG(salary) AS average_salary FROM Employees;
+SELECT MAX(salary) AS max_salary FROM Employees;
+SELECT MIN(salary) AS min_salary FROM Employees;
+
+SELECT d.department_name, COUNT(e.employee_id) AS employee_count
+FROM Departments d
+LEFT JOIN Employees e ON d.department_id = e.department_id
+GROUP BY d.department_name;
+
+SELECT d.department_name, SUM(e.salary) AS total_salary
+FROM Departments d
+LEFT JOIN Employees e ON d.department_id = e.department_id
+GROUP BY d.department_name
+ORDER BY total_salary
+LIMIT 1;
+

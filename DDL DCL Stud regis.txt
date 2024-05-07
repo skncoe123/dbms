@@ -1,0 +1,41 @@
+Design Student Registration for admission database with at least 3 entities and relationships 
+between them. Apply DCL and DDL commands. Draw suitable ER/EER diagram for the 
+system. 
+
+
+-- DDL Commands
+
+-- Create Student table
+CREATE TABLE Student (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(255),
+    address VARCHAR(255),
+    phone_number VARCHAR(20),
+    email VARCHAR(100)
+);
+
+-- Create Course table
+CREATE TABLE Course (
+    course_id INT PRIMARY KEY,
+    title VARCHAR(255),
+    description TEXT,
+    credits INT
+);
+
+-- Create Registration table
+CREATE TABLE Registration (
+    registration_id INT PRIMARY KEY,
+    student_id INT,
+    course_id INT,
+    registration_date DATE,
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (course_id) REFERENCES Course(course_id)
+);
+
+
+-- DCL Commands
+
+-- Grant permissions
+GRANT SELECT, INSERT, UPDATE, DELETE ON Student TO username;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Course TO username;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Registration TO username;

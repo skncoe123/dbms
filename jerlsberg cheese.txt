@@ -1,0 +1,24 @@
+SELECT NOW(),CURDATE(),CURTIME() 
+
+SELECT ProductName, DATE(OrderDate) AS OrderDate 
+FROM Orders 
+WHERE OrderId=1 
+
+SELECT EXTRACT(YEAR FROM OrderDate) AS OrderYear, 
+EXTRACT(MONTH FROM OrderDate) AS OrderMonth, 
+EXTRACT(DAY FROM OrderDate) AS OrderDay 
+FROM Orders 
+WHERE OrderId=1
+
+SELECT OrderId,DATE_ADD(OrderDate,INTERVAL 30 DAY) AS OrderPayDate 
+FROM Orders 
+
+SELECT OrderId, DATE_SUB (OrderDate, INTERVAL 5 DAY) AS SubtractDate 
+FROM Orders 
+
+SELECT DATEDIFF('2014-11-29','2014-11-30') AS DiffDate
+
+DATE_FORMAT(NOW(),'%b %d %Y %h:%i %p') 
+DATE_FORMAT(NOW(),'%m-%d-%Y') 
+DATE_FORMAT(NOW(),'%d %b %y') 
+DATE_FORMAT(NOW(),'%d %b %Y %T:%f')

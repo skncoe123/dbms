@@ -1,0 +1,32 @@
+Consider table Student(rollnumber,name,sub1,sub2,sub3,total). Create procedure to calculate 
+total marks of all the students. Demonstrate its use. 
+
+
+CREATE TABLE Student (
+    rollnumber INT PRIMARY KEY,
+    name VARCHAR(255),
+    sub1 INT,
+    sub2 INT,
+    sub3 INT,
+    total INT
+);
+
+
+
+DELIMITER //
+
+CREATE PROCEDURE CalculateTotalMarks()
+BEGIN
+    UPDATE Student
+    SET total = IFNULL(sub1, 0) + IFNULL(sub2, 0) + IFNULL(sub3, 0);
+END //
+
+DELIMITER ;
+
+
+CALL CalculateTotalMarks();
+
+
+
+
+

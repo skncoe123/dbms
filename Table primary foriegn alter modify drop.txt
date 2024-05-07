@@ -1,0 +1,25 @@
+Create Table with primary key and foreign key constraints.  
+. Alter table with add n modify   
+. Drop table 
+
+
+
+CREATE TABLE Departments (
+    department_id INT PRIMARY KEY AUTO_INCREMENT,
+    department_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Employees (
+    employee_id INT PRIMARY KEY AUTO_INCREMENT,
+    employee_name VARCHAR(100) NOT NULL,
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES Departments(department_id)
+);
+
+ALTER TABLE Employees
+ADD COLUMN salary INT;
+
+ALTER TABLE Employees
+MODIFY COLUMN salary DECIMAL(12, 2);
+
+DROP TABLE Employees;

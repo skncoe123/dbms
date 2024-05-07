@@ -1,0 +1,44 @@
+Design Railway Reservation database with at least 3 entities and relationships between them. 
+Apply DDL commands.Insert minimum 3 records in each table)
+
+CREATE TABLE Passenger (
+    passenger_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    age INT,
+    gender ENUM('Male', 'Female', 'Other'),
+    email VARCHAR(100)
+);
+
+CREATE TABLE Train (
+    train_id INT PRIMARY KEY AUTO_INCREMENT,
+    train_name VARCHAR(100) NOT NULL,
+    source VARCHAR(100) NOT NULL,
+    destination VARCHAR(100) NOT NULL,
+    departure_time TIME,
+    arrival_time TIME
+);
+
+CREATE TABLE Reservation (
+    reservation_id INT PRIMARY KEY AUTO_INCREMENT,
+    passenger_id INT,
+    train_id INT,
+    reservation_date DATE,
+    seat_number INT,
+    FOREIGN KEY (passenger_id) REFERENCES Passenger(passenger_id),
+    FOREIGN KEY (train_id) REFERENCES Train(train_id)
+);
+
+INSERT INTO Passenger (name, age, gender, email) VALUES
+('RAM KUMAR', 30, 'Male', 'RAM@example.com'),
+('SIYA JAIN', 25, 'Female', 'SIYA@example.com'),
+('SHAAM SINGH', 45, 'Male', 'SHAAM@example.com');
+
+INSERT INTO Train (train_name, source, destination, departure_time, arrival_time) VALUES
+('Express', 'INDORE', 'fc', '08:00:00', '20:00:00'),
+('Superfast', 'NEPAL', 'mg', '09:00:00', '22:00:00'),
+('Local', 'INDIA', 'sbrd', '10:00:00', '18:00:00');
+
+INSERT INTO Reservation (passenger_id, train_id, reservation_date, seat_number) VALUES
+(1, 1, '2024-05-10', 25),
+(2, 2, '2024-05-12', 15),
+(3, 3, '2024-05-15', 10);

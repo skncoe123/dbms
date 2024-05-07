@@ -1,0 +1,88 @@
+Consider the relational database given below: 
+                employee (emp_name,street,city) 
+                works(emp_name, company_name,salary) 
+                company(company_name, city) 
+                manager(emp_name, manager_name) 
+Write a query for each of the following : 
+
+1.Find the emp_name, street, and cities of residence of employees whose salary exists between 10000 and 20000 and work for ABC Ltd.
+
+SELECT e.emp_name, e.street, e.city
+FROM employee e
+JOIN works w ON e.emp_name = w.emp_name
+WHERE w.company_name = 'ABC Ltd' 
+AND w.salary BETWEEN 10000 AND 20000;
+
+2.Find the name, street, and cities of employees who live in the same city as the company they work for.
+
+SELECT e.emp_name, e.street, e.city
+FROM employee e
+JOIN works w ON e.emp_name = w.emp_name
+JOIN company c ON w.company_name = c.company_name
+WHERE e.city = c.city;
+
+3.Find all employees in the database who earn more than each employee of Central Bank.
+
+SELECT e.emp_name, e.street, e.city
+FROM employee e
+JOIN works w ON e.emp_name = w.emp_name
+WHERE w.salary > ALL (
+    SELECT salary
+    FROM works
+    WHERE company_name = 'Central Bank'
+);
+
+4.Find the company that has the most employees.
+
+SELECT company_name
+FROM works
+GROUP BY company_name
+ORDER BY COUNT(*) DESC
+LIMIT 1;
+
+5.Find the company that has the smallest salary payout.
+
+SELECT company_name
+FROM works
+GROUP BY company_name
+ORDER BY SUM(salary) ASC
+LIMIT 1;
+
+6.Find those companies whose employees earn a higher salary, on average, than the average salary at Central Bank.
+
+SELECT w.company_name
+FROM works w
+GROUP BY w.company_name
+HAVING AVG(w.salary) > (
+    SELECT AVG(salary)
+    FROM works
+    WHERE company_name = 'Central Bank'
+);
+
+7.Find all employees who live in the same city and on the same street as the manager.
+
+SELECT e.emp_name
+FROM employee e
+JOIN manager m ON e.city = m.city AND e.street = m.street;
+
+8.Find the names of employees who do not work for ABC Ltd.
+
+SELECT emp_name
+FROM employee
+WHERE emp_name NOT IN (
+    SELECT emp_name
+    FROM works
+    WHERE company_name = 'ABC Ltd'
+);
+
+9.Find all the employees with the location of the city starting with 'P'.
+
+SELECT emp_name, street, city
+FROM employee
+WHERE city LIKE 'P%';
+
+10.Find all the employees with a street name ending with 'R'.
+
+SELECT emp_name, street, city
+FROM employee
+WHERE street LIKE '%R';
